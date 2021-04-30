@@ -2,28 +2,15 @@
 
 // Dependencies
 const Discord = require("discord.js");
-const { prefix, token } = require("./config.json");
+require('dotenv').config();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.events = new Discord.Collection();
 
-
-
-// Logs
-client.once("ready", () => {
-  console.log("Ready!");
-});
-
-client.once("reconnecting", () => {
-  console.log("Reconnecting!");
-});
-
-client.once("disconnect", () => {
-  console.log("Disconnect!");
-});
-
-
-
+['command_handler', 'event_handler'].forEach(handler => {
+    require(`./handlers/${handler}`)(client, Discord);
+})
 
 // Bot login
-client.login(token);
+client.login(process.env.TOKEN);
