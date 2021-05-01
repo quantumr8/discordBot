@@ -1,5 +1,8 @@
 const { MessageCollector } = require('discord.js');
 const momentTimezone = require('moment-timezone');
+const { Schema } = require('mongoose');
+
+const scheduledSchema = require('../models/scheduled-schema')
 
 module.exports = {
     category: 'Configuration',
@@ -10,7 +13,32 @@ module.exports = {
     requirePermission: ['ADMINISTRATOR'],
     testOnly: true,
     slash: 'both',
-    init: () => {},
+    init: (client) => {
+        const checkForPosts = async () => {
+            const query = {
+                date: {
+                    $lte: Date.now()
+                }
+            }
+            const results = await scheduledSchema.find(query)
+            for (const post of results) {
+                const { guildId, channelId, content } = post
+                const guild = await client.guilds.fetch(guildId)
+                if (!guild) {
+                    continue
+                }
+                const channel = guild.channels.cache.get(channelId)
+                if (!channel) {
+                    continue
+                }
+                channel.send(content)
+            }
+
+            await scheduledSchema.deleteMany(query)
+
+            setTimeout(checkForPosts, 1000 * 30)// 30 seconds
+        }
+    },
     callback: async ({ message, args}) => {
         const { mentions, guild, channel } = message
 
@@ -58,7 +86,12 @@ module.exports = {
             }
             message.reply('Your message has been scheduled.');
 
-            // TODO: Save to the database
+            await new scheduledSchema({
+                date: targetDate.valueOf(),
+                content: collectedMessage.content,
+                guildId: guild.id,
+                channelId: targetChannel.id,
+            }).save()
         })
 
 

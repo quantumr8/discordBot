@@ -8,7 +8,7 @@ const WOKCommands = require('wokcommands');
 const client = new Discord.Client();
 
 
-// Slahs commands
+// Slash commands
 client.on('ready', () => {
     new WOKCommands(client, {
         commandDir: 'commands',
@@ -32,12 +32,8 @@ client.on('ready', () => {
             emoji: '🎵'
         },
         {
-            // You can change the default emojis as well
-            // "Configuration" is ⚙ by default
             name: 'Configuration',
             emoji: '🚧',
-            // You can also hide a category from the help menu
-            // Admins bypass this
             hidden: true
         }
     ])

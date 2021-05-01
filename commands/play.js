@@ -9,12 +9,12 @@ module.exports = {
     aliases: ['skip', 'stop'], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
     category: 'Music',
     description: 'Play music in discord voice channel.',
-    expectedArgs: '<URL>',
-    minArgs: 0,
+    expectedArgs: '<URL or Keyword>',
+    minArgs: 1,
     testOnly: true,
     guildOnly: true,
     slash: true,
-    callback: async ({message, args, client}) => {
+    callback: async ({message, args, text, client}) => {
 
 
         //Checking for the voicechannel and permissions (you can add more permissions if you like).
@@ -26,6 +26,10 @@ module.exports = {
 
         //This is our server queue. We are getting this server queue from the global queue.
         const server_queue = queue.get(message.guild.id);
+
+        //Get cmd from text
+        const cmdMsg = text.slice(1).split(/ +/);
+        const cmd = cmdMsg.shift().toLowerCase();
 
         //If the user has used the play command
         if (cmd === 'play'){
