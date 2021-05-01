@@ -12,6 +12,10 @@ const client = new Discord.Client();
 client.on('ready', () => {
     new wok(client, {
         commandDir: 'commands',
+        dbOptions: {
+            keepAlive: true,
+            useNewUrlParser: true
+        },
         testServers: ['800539900499066920', '793730357098184754'],
         showWarns: false,
     })
@@ -37,6 +41,7 @@ client.on('ready', () => {
             hidden: true
         }
     ])
+    console.log('Bot is online!');
 });
 
 // Bot login
