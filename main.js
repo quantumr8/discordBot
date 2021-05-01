@@ -3,14 +3,14 @@
 // Dependencies
 const Discord = require("discord.js");
 require('dotenv').config();
-const WOKCommands = require('wokcommands');
+const wok = require('wokcommands');
 
 const client = new Discord.Client();
 
 
 // Slash commands
 client.on('ready', () => {
-    new WOKCommands(client, {
+    new wok(client, {
         commandDir: 'commands',
         testServers: ['800539900499066920', '793730357098184754'],
         showWarns: false,
