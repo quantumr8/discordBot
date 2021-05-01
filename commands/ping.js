@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 module.exports = {
     category: 'Configuration',
     description: 'A simple ping command!',
-    testOnly: true,
+    ownerOnly: true,
     slash: true,
     callback: ({}) => {
         return 'pong!';
