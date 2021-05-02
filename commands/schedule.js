@@ -4,10 +4,14 @@ const { MessageCollector } = require('discord.js')
 const scheduledSchema = require('../models/scheduled-schema')
 
 module.exports = {
-  requiredPermissions: ['ADMINISTRATOR'],
+  category: 'Configuration',
+  description: 'Schedule a message to send.',
   expectedArgs: '<Channel tag> <YYYY/MM/DD> <HH:MM> <"AM" or "PM"> <Timezone>',
   minArgs: 5,
   maxArgs: 5,
+  requiredPermissions: ['ADMINISTRATOR'],
+  testOnly: true,
+  slash: true,
   init: (client) => {
     const checkForPosts = async () => {
       const query = {
