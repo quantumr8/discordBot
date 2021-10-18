@@ -11,14 +11,37 @@ const client = new DiscordJS.Client({
 
 client.on('ready', () => {
     console.log('The bot is ready.')
+
+    const guildID = '899527592892330027'
+    const guild = client.guilds.cache.get(guildID)
+    let commands
+
+    if (guild) {
+        commands = guild.commands
+    } else {
+        commands = client.application?.commands
+    }
+
+    commands?.create({
+        name: 'ping',
+        description: 'Replys with pong.',
+    })
 })
 
-client.on('messageCreate', (message) => {
-    if (message.content === 'ping') {
-        message.reply({
-            content: 'pong!!!',
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) {
+        return
+    }
+
+    const { commandName, options } = interaction
+
+    if (commandName === 'ping') {
+        interaction.reply({
+            content: 'pong',
+            ephemeral: true,
         })
     }
 })
+
 
 client.login(process.env.TOKEN)
