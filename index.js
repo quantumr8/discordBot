@@ -23,6 +23,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var discord_js_1 = __importStar(require("discord.js"));
+var wokcommands_1 = __importDefault(require("wokcommands"));
+var path_1 = __importDefault(require("path"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var guildID = '899527592892330027';
@@ -34,5 +36,9 @@ var client = new discord_js_1.default.Client({
 });
 client.on('ready', function () {
     console.log('The bot is ready.');
+    new wokcommands_1.default(client, {
+        commandsDir: path_1.default.join(__dirname, 'commands'),
+        typeScript: true
+    });
 });
 client.login(process.env.TOKEN);
